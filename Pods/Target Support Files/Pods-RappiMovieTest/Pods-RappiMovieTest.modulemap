@@ -1,0 +1,6 @@
+framework module Pods_RappiMovieTest {
+  umbrella header "Pods-RappiMovieTest-umbrella.h"
+
+  export *
+  module * { export * }
+}

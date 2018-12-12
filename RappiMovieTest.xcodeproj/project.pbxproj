@@ -13,9 +13,15 @@
 		A074589521C0880200D3E483 /* RappiMovieTest.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A074589321C0880200D3E483 /* RappiMovieTest.xcdatamodeld */; };
 		A074589721C0880700D3E483 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A074589621C0880700D3E483 /* Assets.xcassets */; };
 		A074589A21C0880700D3E483 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A074589821C0880700D3E483 /* LaunchScreen.storyboard */; };
+		A07458A321C0887100D3E483 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07458A221C0887100D3E483 /* Extensions.swift */; };
+		A07458A521C088D600D3E483 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07458A421C088D600D3E483 /* HomeViewController.swift */; };
+		A07458A721C0892A00D3E483 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07458A621C0892A00D3E483 /* LoginController.swift */; };
+		A07458A921C0BDEC00D3E483 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07458A821C0BDEC00D3E483 /* AuthService.swift */; };
+		AA3E853301E364F1A4984BF2 /* Pods_RappiMovieTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7690E9B200DBD3E169B562E /* Pods_RappiMovieTest.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		65AD23933E2A0E7B1039417E /* Pods-RappiMovieTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RappiMovieTest.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RappiMovieTest/Pods-RappiMovieTest.debug.xcconfig"; sourceTree = "<group>"; };
 		A074588921C0880200D3E483 /* RappiMovieTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RappiMovieTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A074588C21C0880200D3E483 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A074588E21C0880200D3E483 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -24,6 +30,12 @@
 		A074589621C0880700D3E483 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A074589921C0880700D3E483 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A074589B21C0880700D3E483 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A07458A221C0887100D3E483 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		A07458A421C088D600D3E483 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		A07458A621C0892A00D3E483 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
+		A07458A821C0BDEC00D3E483 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		B7690E9B200DBD3E169B562E /* Pods_RappiMovieTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RappiMovieTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C8D28098D7914A60FE4533FD /* Pods-RappiMovieTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RappiMovieTest.release.xcconfig"; path = "Pods/Target Support Files/Pods-RappiMovieTest/Pods-RappiMovieTest.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,17 +43,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA3E853301E364F1A4984BF2 /* Pods_RappiMovieTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		61AE433D5390A4F1FA4376F2 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				65AD23933E2A0E7B1039417E /* Pods-RappiMovieTest.debug.xcconfig */,
+				C8D28098D7914A60FE4533FD /* Pods-RappiMovieTest.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		98F14619FD2A88773C3A6D74 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B7690E9B200DBD3E169B562E /* Pods_RappiMovieTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		A074588021C0880200D3E483 = {
 			isa = PBXGroup;
 			children = (
 				A074588B21C0880200D3E483 /* RappiMovieTest */,
 				A074588A21C0880200D3E483 /* Products */,
+				61AE433D5390A4F1FA4376F2 /* Pods */,
+				98F14619FD2A88773C3A6D74 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -56,6 +88,7 @@
 		A074588B21C0880200D3E483 /* RappiMovieTest */ = {
 			isa = PBXGroup;
 			children = (
+				A07458A121C0886600D3E483 /* Utils */,
 				A074588C21C0880200D3E483 /* AppDelegate.swift */,
 				A074588E21C0880200D3E483 /* ViewController.swift */,
 				A074589021C0880200D3E483 /* Main.storyboard */,
@@ -63,8 +96,19 @@
 				A074589821C0880700D3E483 /* LaunchScreen.storyboard */,
 				A074589B21C0880700D3E483 /* Info.plist */,
 				A074589321C0880200D3E483 /* RappiMovieTest.xcdatamodeld */,
+				A07458A421C088D600D3E483 /* HomeViewController.swift */,
+				A07458A621C0892A00D3E483 /* LoginController.swift */,
 			);
 			path = RappiMovieTest;
+			sourceTree = "<group>";
+		};
+		A07458A121C0886600D3E483 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				A07458A221C0887100D3E483 /* Extensions.swift */,
+				A07458A821C0BDEC00D3E483 /* AuthService.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -74,9 +118,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A074589E21C0880700D3E483 /* Build configuration list for PBXNativeTarget "RappiMovieTest" */;
 			buildPhases = (
+				A470294AFCED26C83099B686 /* [CP] Check Pods Manifest.lock */,
 				A074588521C0880200D3E483 /* Sources */,
 				A074588621C0880200D3E483 /* Frameworks */,
 				A074588721C0880200D3E483 /* Resources */,
+				F936BECE35650E57DD8149E3 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -133,14 +179,67 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		A470294AFCED26C83099B686 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-RappiMovieTest-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F936BECE35650E57DD8149E3 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-RappiMovieTest/Pods-RappiMovieTest-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/Locksmith/Locksmith.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Locksmith.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RappiMovieTest/Pods-RappiMovieTest-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		A074588521C0880200D3E483 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A07458A521C088D600D3E483 /* HomeViewController.swift in Sources */,
+				A07458A721C0892A00D3E483 /* LoginController.swift in Sources */,
 				A074588F21C0880200D3E483 /* ViewController.swift in Sources */,
 				A074588D21C0880200D3E483 /* AppDelegate.swift in Sources */,
 				A074589521C0880200D3E483 /* RappiMovieTest.xcdatamodeld in Sources */,
+				A07458A321C0887100D3E483 /* Extensions.swift in Sources */,
+				A07458A921C0BDEC00D3E483 /* AuthService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,6 +383,7 @@
 		};
 		A074589F21C0880700D3E483 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 65AD23933E2A0E7B1039417E /* Pods-RappiMovieTest.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -295,13 +395,14 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.OmarTorres.RappiMovieTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
 		A07458A021C0880700D3E483 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C8D28098D7914A60FE4533FD /* Pods-RappiMovieTest.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -313,8 +414,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.OmarTorres.RappiMovieTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
