@@ -61,6 +61,13 @@
             ReferencedContainer = "container:RappiMovieTest.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "RAPPI_MOVIE_TEST_API_KEY"
+            value = "64f0c8b293c13d2b462d07ebab329965"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>

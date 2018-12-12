@@ -110,7 +110,6 @@ class LoginController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func handleLogin() {
-        
         AuthService.instance.getRequestToken(username: usernameTextField.text!, password: passwordTextField.text!) { (success) in
             if success {
                 self.dismiss(animated: true, completion: nil)
