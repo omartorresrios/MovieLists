@@ -9,7 +9,15 @@
 import UIKit
 import CoreData
 
+protocol FeedCellDelegate {
+    func didTapToMovieDetail(title: String, overview: String, voteCount: Int32, popularity: Double, voteAverage: Double, releaseDate: String, posterPath: String)
+}
+
 class FeedCell: BaseCell, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate {
+    
+    var feedCellDelegate: FeedCellDelegate?
+    let cellId = "cellId"
+    var blockOperations: [BlockOperation] = []
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -20,21 +28,13 @@ class FeedCell: BaseCell, UICollectionViewDataSource, UICollectionViewDelegate, 
         return cv
     }()
     
-    let cellId = "cellId"
-    
-    func fetchMovies() {
-        
-        do {
-            try self.fetchedhResultController.performFetch()
-            print("popular movies: ", self.fetchedhResultController)
-        } catch let error  {
-            print("ERROR: \(error)")
-        }
-        
-        ApiService.instance.fetchPopularMovies { (movies) in
-            CoreDataStack.instance.saveInCoreDataWith(number: 1, array: movies)
-        }
-    }
+    lazy var fetchedhResultController: NSFetchedResultsController<NSFetchRequestResult> = {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: String(describing: "PopularMovie"))
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "popularity", ascending: false)]
+        let frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CoreDataStack.instance.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        frc.delegate = self
+        return frc
+    }()
     
     override func setupViews() {
         super.setupViews()
@@ -47,19 +47,28 @@ class FeedCell: BaseCell, UICollectionViewDataSource, UICollectionViewDelegate, 
         addSubview(collectionView)
         collectionView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        collectionView.register(MovieCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView.register(PopularMovieCell.self, forCellWithReuseIdentifier: cellId)
         
     }
     
-    lazy var fetchedhResultController: NSFetchedResultsController<NSFetchRequestResult> = {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: String(describing: "PopularMovie"))
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "popularity", ascending: false)]
-        let frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CoreDataStack.instance.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
-         frc.delegate = self
-        return frc
-    }()
+    deinit {
+        for operation: BlockOperation in blockOperations {
+            operation.cancel()
+        }
+        blockOperations.removeAll(keepingCapacity: false)
+    }
     
-    var blockOperations: [BlockOperation] = []
+    func fetchMovies() {
+        do {
+            try self.fetchedhResultController.performFetch()
+        } catch let error  {
+            print("ERROR: \(error)")
+        }
+        
+        ApiService.instance.fetchPopularMovies { (movies) in
+            CoreDataStack.instance.saveInCoreDataWith(number: 1, array: movies)
+        }
+    }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch type {
@@ -71,7 +80,6 @@ class FeedCell: BaseCell, UICollectionViewDataSource, UICollectionViewDelegate, 
                     }
                 })
             )
-            
         case .delete:
             blockOperations.append(
                 BlockOperation(block: { [weak self] in
@@ -80,11 +88,11 @@ class FeedCell: BaseCell, UICollectionViewDataSource, UICollectionViewDelegate, 
                     }
                 })
             )
-            
         default:
             break
         }
     }
+    
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         collectionView.performBatchUpdates({ () -> Void in
             for operation: BlockOperation in self.blockOperations {
@@ -99,25 +107,6 @@ class FeedCell: BaseCell, UICollectionViewDataSource, UICollectionViewDelegate, 
         blockOperations.removeAll(keepingCapacity: false)
     }
     
-    
-    deinit {
-        // Cancel all block operations when VC deallocates
-        for operation: BlockOperation in blockOperations {
-            operation.cancel()
-        }
-        
-        blockOperations.removeAll(keepingCapacity: false)
-    }
-    
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! MovieCell
-        if let movie = fetchedhResultController.object(at: indexPath) as? PopularMovie {
-            cell.movie = movie
-        }
-        return cell
-    }
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if let count = fetchedhResultController.sections?.first?.numberOfObjects {
             return count
@@ -125,7 +114,14 @@ class FeedCell: BaseCell, UICollectionViewDataSource, UICollectionViewDelegate, 
         return 0
     }
     
-
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! PopularMovieCell
+        if let movie = fetchedhResultController.object(at: indexPath) as? PopularMovie {
+            cell.movie = movie
+        }
+        return cell
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: frame.width, height: 380)
     }
@@ -134,10 +130,18 @@ class FeedCell: BaseCell, UICollectionViewDataSource, UICollectionViewDelegate, 
         return 0
     }
 
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        let videoLauncher = VideoLauncher()
-//        videoLauncher.showVideoPlayer()
-//    }
-//
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let movie = fetchedhResultController.object(at: indexPath) as? PopularMovie {
+            let title = movie.title
+            let posterPath = movie.poster_path
+            let overview = movie.overview
+            let voteCount = movie.vote_count
+            let popularity = movie.popularity
+            let voteAverage = movie.vote_average
+            let releaseDate = movie.release_date
+            
+            feedCellDelegate?.didTapToMovieDetail(title: title!, overview: overview!, voteCount: voteCount, popularity: popularity, voteAverage: voteAverage, releaseDate: releaseDate!, posterPath: posterPath!)
+        }
+    }
 }
 

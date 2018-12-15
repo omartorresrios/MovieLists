@@ -19,8 +19,10 @@ extension TopRatedMovie {
 
     @NSManaged public var popularity: Double
     @NSManaged public var poster_path: String?
+    @NSManaged public var overview: String?
     @NSManaged public var title: String?
     @NSManaged public var vote_average: Double
+    @NSManaged public var release_date: String?
     @NSManaged public var vote_count: Int32
 
 }

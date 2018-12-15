@@ -12,14 +12,25 @@ class TopRatedMovieCell: BaseCell {
     
     var movie: TopRatedMovie? {
         didSet {
-            self.titleLabel.text = movie?.title
-            self.popularityLabel.text = "\(movie?.popularity)"
-            self.voteAverageLabel.text = "\(movie?.vote_average)"
-            self.voteCountLabel.text = "\(movie?.vote_count)"
+            if let title = movie?.title {
+                self.titleLabel.text = title
+            }
+            
+            if let popularity = movie?.popularity {
+                self.popularityLabel.text = "\(popularity)"
+            }
+            
+            if let voteAverage = movie?.vote_average {
+                self.voteAverageLabel.text = "\(voteAverage)"
+            }
+            
+            if let voteCount = movie?.vote_count {
+                self.voteCountLabel.text = "\(voteCount)"
+            }
             
             if let url = movie?.poster_path {
-                let baseUrl = self.IMAGE_BASE_URL + url
-                self.movieImageView.loadImage(urlString: baseUrl)// .loadImageUsingCacheWithURLString(url, placeHolder: UIImage(named: "placeholder"))
+                let baseUrl = IMAGE_BASE_URL + url
+                self.movieImageView.loadImage(urlString: baseUrl)
             }
         }
     }
@@ -28,7 +39,6 @@ class TopRatedMovieCell: BaseCell {
         let imageView = CustomImageView()
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
-        //        imageView.layer.cornerRadius = 80
         return imageView
     }()
     
@@ -79,7 +89,5 @@ class TopRatedMovieCell: BaseCell {
         voteCountLabel.anchor(top: voteAverageLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 20, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 0)
         
     }
-    
-    let IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"
     
 }

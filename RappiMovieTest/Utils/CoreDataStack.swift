@@ -68,10 +68,11 @@ class CoreDataStack: NSObject {
     private func createMovieEntityFrom(number: Int, entityName: String, dictionary: [String: AnyObject]) -> NSManagedObject? {
         let context = CoreDataStack.instance.persistentContainer.viewContext
         
-        
         if number == 1 {
             let model = NSEntityDescription.insertNewObject(forEntityName: entityName, into: context) as! PopularMovie
             model.title = dictionary["title"] as? String ?? ""
+            model.overview = dictionary["overview"] as? String ?? ""
+            model.release_date = dictionary["release_date"] as? String ?? ""
             model.popularity = dictionary["popularity"] as? Double ?? 0
             model.poster_path = dictionary["poster_path"] as? String ?? ""
             model.vote_average = dictionary["vote_average"] as? Double ?? 0
@@ -80,6 +81,8 @@ class CoreDataStack: NSObject {
         } else if number == 2 {
             let model = NSEntityDescription.insertNewObject(forEntityName: entityName, into: context) as! TopRatedMovie
             model.title = dictionary["title"] as? String ?? ""
+            model.overview = dictionary["overview"] as? String ?? ""
+            model.release_date = dictionary["release_date"] as? String ?? ""
             model.popularity = dictionary["popularity"] as? Double ?? 0
             model.poster_path = dictionary["poster_path"] as? String ?? ""
             model.vote_average = dictionary["vote_average"] as? Double ?? 0
@@ -88,6 +91,8 @@ class CoreDataStack: NSObject {
         } else {
             let model = NSEntityDescription.insertNewObject(forEntityName: entityName, into: context) as! UpcomingMovie
             model.title = dictionary["title"] as? String ?? ""
+            model.overview = dictionary["overview"] as? String ?? ""
+            model.release_date = dictionary["release_date"] as? String ?? ""
             model.popularity = dictionary["popularity"] as? Double ?? 0
             model.poster_path = dictionary["poster_path"] as? String ?? ""
             model.vote_average = dictionary["vote_average"] as? Double ?? 0

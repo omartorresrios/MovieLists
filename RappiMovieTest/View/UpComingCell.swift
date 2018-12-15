@@ -9,7 +9,15 @@
 import UIKit
 import CoreData
 
+protocol UpcomingCellDelegate {
+    func didTapToMovieDetail(title: String, overview: String, voteCount: Int32, popularity: Double, voteAverage: Double, releaseDate: String, posterPath: String)
+}
+
 class UpComingCell: BaseCell, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate {
+    
+    var upcomingCellDelegate: UpcomingCellDelegate?
+    let cellId = "cellId"
+    var blockOperations: [BlockOperation] = []
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -20,21 +28,13 @@ class UpComingCell: BaseCell, UICollectionViewDataSource, UICollectionViewDelega
         return cv
     }()
     
-    let cellId = "cellId"
-    
-    func fetchMovies() {
-        
-        do {
-            try self.fetchedhResultController.performFetch()
-            print("popular movies: ", self.fetchedhResultController)
-        } catch let error  {
-            print("ERROR: \(error)")
-        }
-        
-        ApiService.instance.fetchUpcomingMovies { (movies) in
-            CoreDataStack.instance.saveInCoreDataWith(number: 3, array: movies)
-        }
-    }
+    lazy var fetchedhResultController: NSFetchedResultsController<NSFetchRequestResult> = {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: String(describing: "UpcomingMovie"))
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "popularity", ascending: false)]
+        let frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CoreDataStack.instance.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        frc.delegate = self
+        return frc
+    }()
     
     override func setupViews() {
         super.setupViews()
@@ -51,15 +51,25 @@ class UpComingCell: BaseCell, UICollectionViewDataSource, UICollectionViewDelega
         
     }
     
-    lazy var fetchedhResultController: NSFetchedResultsController<NSFetchRequestResult> = {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: String(describing: "UpcomingMovie"))
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "popularity", ascending: false)]
-        let frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CoreDataStack.instance.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
-        frc.delegate = self
-        return frc
-    }()
+    deinit {
+        for operation: BlockOperation in blockOperations {
+            operation.cancel()
+        }
+        
+        blockOperations.removeAll(keepingCapacity: false)
+    }
     
-    var blockOperations: [BlockOperation] = []
+    func fetchMovies() {
+        do {
+            try self.fetchedhResultController.performFetch()
+        } catch let error  {
+            print("ERROR: \(error)")
+        }
+        
+        ApiService.instance.fetchUpcomingMovies { (movies) in
+            CoreDataStack.instance.saveInCoreDataWith(number: 3, array: movies)
+        }
+    }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch type {
@@ -71,7 +81,6 @@ class UpComingCell: BaseCell, UICollectionViewDataSource, UICollectionViewDelega
                     }
                 })
             )
-            
         case .delete:
             blockOperations.append(
                 BlockOperation(block: { [weak self] in
@@ -80,11 +89,11 @@ class UpComingCell: BaseCell, UICollectionViewDataSource, UICollectionViewDelega
                     }
                 })
             )
-            
         default:
             break
         }
     }
+    
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         collectionView.performBatchUpdates({ () -> Void in
             for operation: BlockOperation in self.blockOperations {
@@ -99,15 +108,12 @@ class UpComingCell: BaseCell, UICollectionViewDataSource, UICollectionViewDelega
         blockOperations.removeAll(keepingCapacity: false)
     }
     
-    deinit {
-        // Cancel all block operations when VC deallocates
-        for operation: BlockOperation in blockOperations {
-            operation.cancel()
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if let count = fetchedhResultController.sections?.first?.numberOfObjects {
+            return count
         }
-        
-        blockOperations.removeAll(keepingCapacity: false)
+        return 0
     }
-    
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! UpcomingMovieCell
@@ -117,18 +123,25 @@ class UpComingCell: BaseCell, UICollectionViewDataSource, UICollectionViewDelega
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let count = fetchedhResultController.sections?.first?.numberOfObjects {
-            return count
-        }
-        return 0
-    }
-    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: frame.width, height: 380)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let movie = fetchedhResultController.object(at: indexPath) as? UpcomingMovie {
+            let title = movie.title
+            let posterPath = movie.poster_path
+            let overview = movie.overview
+            let voteCount = movie.vote_count
+            let popularity = movie.popularity
+            let voteAverage = movie.vote_average
+            let releaseDate = movie.release_date
+            
+            upcomingCellDelegate?.didTapToMovieDetail(title: title!, overview: overview!, voteCount: voteCount, popularity: popularity, voteAverage: voteAverage, releaseDate: releaseDate!, posterPath: posterPath!)
+        }
     }
 }

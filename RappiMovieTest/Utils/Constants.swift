@@ -9,4 +9,4 @@
 import Foundation
 
 let API_KEY = ProcessInfo.processInfo.environment["RAPPI_MOVIE_TEST_API_KEY"]
-
+let IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"

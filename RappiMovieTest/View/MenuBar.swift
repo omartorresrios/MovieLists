@@ -10,27 +10,6 @@ import UIKit
 
 class MenuBar: UIView, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
-    var horizontalBarLeftAnchorConstraint: NSLayoutConstraint?
-    var homeViewController: HomeViewController?
-    
-    func setupHorizontalBar() {
-        let horizontalBarView = UIView()
-        horizontalBarView.backgroundColor = UIColor.red
-        horizontalBarView.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(horizontalBarView)
-        
-        horizontalBarLeftAnchorConstraint = horizontalBarView.leftAnchor.constraint(equalTo: self.leftAnchor)
-        horizontalBarLeftAnchorConstraint?.isActive = true
-        
-        horizontalBarView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        horizontalBarView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1/3).isActive = true
-        horizontalBarView.heightAnchor.constraint(equalToConstant: 4).isActive = true
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        homeViewController?.scrollToMenuIndex(menuIndex: indexPath.item)
-    }
-    
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -40,21 +19,37 @@ class MenuBar: UIView, UICollectionViewDataSource, UICollectionViewDelegate, UIC
         return cv
     }()
     
+    var horizontalBarLeftAnchorConstraint: NSLayoutConstraint?
+    var homeViewController: HomeViewController?
     let cellId = "cellId"
     let names = ["Popular", "Top Rated", "Upcoming"]
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        collectionView.register(MenuCell.self, forCellWithReuseIdentifier: cellId)
-        
         addSubview(collectionView)
         collectionView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        collectionView.register(MenuCell.self, forCellWithReuseIdentifier: cellId)
         
         let selectedIndexPath = IndexPath(item: 0, section: 0)
         collectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .bottom)
         
         setupHorizontalBar()
+    }
+    
+    func setupHorizontalBar() {
+        let horizontalBarView = UIView()
+        horizontalBarView.backgroundColor = UIColor.red
+        horizontalBarView.translatesAutoresizingMaskIntoConstraints = false
+        
+        addSubview(horizontalBarView)
+        horizontalBarLeftAnchorConstraint = horizontalBarView.leftAnchor.constraint(equalTo: self.leftAnchor)
+        horizontalBarLeftAnchorConstraint?.isActive = true
+        
+        horizontalBarView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        horizontalBarView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1/3).isActive = true
+        horizontalBarView.heightAnchor.constraint(equalToConstant: 4).isActive = true
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -67,6 +62,10 @@ class MenuBar: UIView, UICollectionViewDataSource, UICollectionViewDelegate, UIC
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        homeViewController?.scrollToMenuIndex(menuIndex: indexPath.item)
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: frame.width / 3, height: frame.height)
     }
@@ -77,38 +76,6 @@ class MenuBar: UIView, UICollectionViewDataSource, UICollectionViewDelegate, UIC
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-}
-
-class MenuCell: BaseCell {
-    
-    let nameLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .center
-        label.textColor = .black
-        return label
-    }()
-    
-    override var isHighlighted: Bool {
-        didSet {
-            nameLabel.textColor = isHighlighted ? UIColor.red : UIColor.black
-        }
-    }
-    
-    override var isSelected: Bool {
-        didSet {
-            nameLabel.textColor = isSelected ? UIColor.red : UIColor.black
-        }
-    }
-    
-    override func setupViews() {
-        super.setupViews()
-        backgroundColor = .green
-        addSubview(nameLabel)
-        nameLabel.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        nameLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        nameLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
     }
     
 }
