@@ -13,7 +13,7 @@ protocol UpcomingCellDelegate {
     func didTapToMovieDetail(title: String, overview: String, voteCount: Int32, popularity: Double, voteAverage: Double, releaseDate: String, posterPath: String)
 }
 
-class UpComingCell: BaseCell, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate {
+class UpComingCell: BaseCell, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UISearchBarDelegate, NSFetchedResultsControllerDelegate {
     
     var upcomingCellDelegate: UpcomingCellDelegate?
     let cellId = "cellId"
@@ -38,36 +38,55 @@ class UpComingCell: BaseCell, UICollectionViewDataSource, UICollectionViewDelega
     
     override func setupViews() {
         super.setupViews()
-        
+        setupCollectionView()
         fetchMovies()
-        
-        collectionView.contentInset = .init(top: 50, left: 0, bottom: 0, right: 0)
-        collectionView.scrollIndicatorInsets = .init(top: 50, left: 0, bottom: 0, right: 0)
-        
-        addSubview(collectionView)
-        collectionView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        
-        collectionView.register(UpcomingMovieCell.self, forCellWithReuseIdentifier: cellId)
-        
     }
     
     deinit {
         for operation: BlockOperation in blockOperations {
             operation.cancel()
         }
-        
         blockOperations.removeAll(keepingCapacity: false)
     }
     
     func fetchMovies() {
-        do {
-            try self.fetchedhResultController.performFetch()
-        } catch let error  {
-            print("ERROR: \(error)")
-        }
-        
+        performFetch()
         ApiService.instance.fetchUpcomingMovies { (movies) in
             CoreDataStack.instance.saveInCoreDataWith(number: 3, array: movies)
+        }
+    }
+    
+    func setupCollectionView() {
+        collectionView.backgroundColor = .yellow
+        collectionView.keyboardDismissMode = .onDrag
+        
+        collectionView.contentInset = UIEdgeInsets(top: 50, left: 0, bottom: 0, right: 0)
+        collectionView.scrollIndicatorInsets = UIEdgeInsets(top: 50, left: 0, bottom: 0, right: 0)
+        
+        addSubview(collectionView)
+        collectionView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        collectionView.register(UpcomingMovieCell.self, forCellWithReuseIdentifier: cellId)
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.isEmpty {
+            fetchedhResultController.fetchRequest.predicate = nil
+            performFetch()
+        } else {
+            var predicate: NSPredicate = NSPredicate()
+            predicate = NSPredicate(format: "title contains[c] '\(searchText)'")
+            fetchedhResultController.fetchRequest.predicate = predicate
+            performFetch()
+        }
+        collectionView.reloadData()
+    }
+    
+    func performFetch() {
+        do {
+            try self.fetchedhResultController.performFetch()
+        } catch {
+            print("Error fetching result controller")
         }
     }
     

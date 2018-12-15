@@ -15,27 +15,53 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
     let topRatedCellId = "topRatedCellId"
     let upcomingCellId = "upcomingCellId"
     
+    let logoutButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(#imageLiteral(resourceName: "logout"), for: .normal)
+        button.addTarget(self, action: #selector(handleLogout), for: .touchUpInside)
+        return button
+    }()
+    
     lazy var menuBar: MenuBar = {
         let mb = MenuBar()
         mb.homeViewController = self
         return mb
     }()
     
+    lazy var searchBar: UISearchBar = {
+        let sb = UISearchBar()
+        sb.placeholder = "Busca películas"
+        sb.barTintColor = .gray
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).font = UIFont(name: "SFUIDisplay-Regular", size: 13)
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 230)
+        return sb
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "logout", style: .done, target: self, action: #selector(handleLogout))
+        navigationController?.navigationBar.isTranslucent = false
         
         setupMenuBar()
+        setupNavBar()
         setupCollectionView()
         checkLogin()
+    }
+    
+    func setupNavBar() {
+        let navBar = navigationController?.navigationBar
+        
+        navigationController?.navigationBar.addSubview(logoutButton)
+        logoutButton.anchor(top: nil, left: nil, bottom: nil, right: navBar?.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 30, height: 30)
+        logoutButton.centerYAnchor.constraint(equalTo: (navBar?.centerYAnchor)!).isActive = true
+        
+        navigationController?.navigationBar.addSubview(searchBar)
+        searchBar.anchor(top: navBar?.topAnchor, left: navBar?.leftAnchor, bottom: navBar?.bottomAnchor, right: logoutButton.leftAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
         
     }
     
     private func setupMenuBar() {
-        let navigationBarHeight = (navigationController?.navigationBar.frame.height)! + 20
         view.addSubview(menuBar)
-        menuBar.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: navigationBarHeight, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 50)
+        menuBar.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 50)
     }
     
     func setupCollectionView() {
@@ -44,14 +70,16 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
             flowLayout.minimumLineSpacing = 0
         }
         
-        collectionView?.backgroundColor = UIColor.white
+        collectionView?.backgroundColor = .brown
+        
+        collectionView?.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        
+        collectionView?.contentInsetAdjustmentBehavior = .never
         
         collectionView?.register(FeedCell.self, forCellWithReuseIdentifier: popularCellId)
         collectionView?.register(TopRatedCell.self, forCellWithReuseIdentifier: topRatedCellId)
         collectionView?.register(UpComingCell.self, forCellWithReuseIdentifier: upcomingCellId)
-        
-        collectionView?.contentInset = UIEdgeInsets(top: 60, left: 0, bottom: 0, right: 0)
-        collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 60, left: 0, bottom: 0, right: 0)
         
         collectionView?.isPagingEnabled = true
     }
@@ -74,7 +102,18 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
         collectionView?.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        searchBar.isHidden = false
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     func didTapToMovieDetail(title: String, overview: String, voteCount: Int32, popularity: Double, voteAverage: Double, releaseDate: String, posterPath: String) {
+        searchBar.isHidden = true
+        searchBar.endEditing(true)
         let movieDetailController = MovieDetailController()
         movieDetailController.movieTitle = title
         movieDetailController.movieOverview = overview
@@ -94,14 +133,17 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
         if indexPath.item == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: popularCellId, for: indexPath) as! FeedCell
             cell.feedCellDelegate = self
+            searchBar.delegate = cell
             return cell
         } else if indexPath.item == 1 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: topRatedCellId, for: indexPath) as! TopRatedCell
             cell.topRatedCellDelegate = self
+            searchBar.delegate = cell
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: upcomingCellId, for: indexPath) as! UpComingCell
             cell.upcomingCellDelegate = self
+            searchBar.delegate = cell
             return cell
         }
     }

@@ -31,6 +31,7 @@ class MenuCell: BaseCell {
     
     override func setupViews() {
         super.setupViews()
+        backgroundColor = .green
         addSubview(nameLabel)
         nameLabel.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         nameLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
