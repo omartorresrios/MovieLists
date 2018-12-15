@@ -14,15 +14,6 @@ class AuthService {
     
     static let instance = AuthService()
     
-    let API_KEY = ProcessInfo.processInfo.environment["RAPPI_MOVIE_TEST_API_KEY"]
-    let BASE_URL = "https://api.themoviedb.org/3/"
-    
-    let header = ["Accept": "application/json"]
-    let GET_TOKEN_METHOD = "authentication/token/new"
-    let LOGIN_METHOD = "authentication/token/validate_with_login"
-    let GET_SESSION_ID_METHOD = "authentication/session/new"
-    let GET_USER_ID_METHOD = "account"
-    
     var requestToken: String?
     var sessionID: String?
     var userID: Int?
@@ -107,9 +98,7 @@ class AuthService {
                     print("your user id: \(userID)")
                     
                     self.updateUserLoggedInFlag()
-                    
                     self.saveApiTokenInKeychain(tokenString: self.requestToken!, userId: userID, username: username)
-                    //                    self.completeLogin()
                 }
                 
             case .failure(let error):
@@ -131,17 +120,17 @@ class AuthService {
         do {
             try Locksmith.saveData(data: ["authenticationToken": tokenString], forUserAccount: "AuthToken")
         } catch {
-            
+            print("can't save data in Keychain")
         }
         do {
             try Locksmith.saveData(data: ["id": userId], forUserAccount: "currentUserId")
         } catch {
-            
+            print("can't save data in Keychain")
         }
         do {
             try Locksmith.saveData(data: ["username": username], forUserAccount: "currentUserName")
         } catch {
-            
+            print("can't save data in Keychain")
         }
         
         print("AuthToken recién guardado: \(Locksmith.loadDataForUserAccount(userAccount: "AuthToken")!)")
@@ -149,39 +138,4 @@ class AuthService {
         print("currentUserName recién guardado: \(Locksmith.loadDataForUserAccount(userAccount: "currentUserName")!)")
         
     }
-    
-    //    func completeLogin() {
-    //        guard let userId = userID else { return }
-    //        let getFavoritesMethod = "account/\(userId)/favorite/movies"
-    //        let urlString = baseURLSecureString + getFavoritesMethod + "?api_key=" + apiKey + "&session_id=" + sessionID!
-    //        let url = NSURL(string: urlString)!
-    //        let request = NSMutableURLRequest(url: url as URL)
-    //        request.addValue("application/json", forHTTPHeaderField: "Accept")
-    //        let session = URLSession.shared
-    //        let task = session.dataTask(with: request as URLRequest) { data, response, downloadError in
-    //            if let error = downloadError {
-    ////                dispatch_async(dispatch_get_main_queue()) {
-    ////                    self.debugTextLabel.text = "Cannot retrieve information about user \(self.userID)."
-    ////                }
-    //                print("Could not complete the request \(error)")
-    //            } else {
-    //                let parsedResult = try! JSONSerialization.JSONObjectWithData(data!, options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary
-    //                if let results = parsedResult["results"] as? NSArray {
-    //                    dispatch_async(dispatch_get_main_queue()) {
-    //                        let firstFavorite = results.firstObject as? NSDictionary
-    //                        let title = firstFavorite?.valueForKey("title")
-    //                        self.debugTextLabel.text = "Title: \(title!)"
-    //                    }
-    //                } else {
-    ////                    dispatch_async(dispatch_get_main_queue()) {
-    ////                        self.debugTextLabel.text = "Cannot retrieve information about user \(self.userID)."
-    ////                    }
-    //                    print("Could not find 'results' in \(parsedResult)")
-    //                }
-    //            }
-    //        }
-    //        task.resume()
-    //    }
-    
-    
 }

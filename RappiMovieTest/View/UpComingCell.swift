@@ -57,7 +57,6 @@ class UpComingCell: BaseCell, UICollectionViewDataSource, UICollectionViewDelega
     }
     
     func setupCollectionView() {
-        collectionView.backgroundColor = .yellow
         collectionView.keyboardDismissMode = .onDrag
         
         collectionView.contentInset = UIEdgeInsets(top: 50, left: 0, bottom: 0, right: 0)

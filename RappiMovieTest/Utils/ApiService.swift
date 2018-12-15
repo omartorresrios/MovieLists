@@ -14,13 +14,6 @@ import CoreData
 class ApiService: NSObject {
     
     static let instance = ApiService()
-    let BASE_URL = "https://api.themoviedb.org/3/"
-    let GET_POPULAR_MOVIES_URL = "movie/popular"
-    let GET_TOP_RATED_MOVIES_URL = "movie/top_rated"
-    let GET_UPCOMING_MOVIES_URL = "movie/upcoming"
-    
-    let parameters = "?api_key=\(API_KEY!)&language=en-US&page=1"
-    let header = ["Accept": "application/json"]
     
     func fetchPopularMovies(completion: @escaping ([[String : AnyObject]]) -> ()) {
         fetchFeedForUrlString(urlString: BASE_URL + GET_POPULAR_MOVIES_URL + parameters, entityName: popularMovie, completion: completion)
@@ -33,10 +26,6 @@ class ApiService: NSObject {
     func fetchUpcomingMovies(completion: @escaping ([[String : AnyObject]]) -> ()) {
         fetchFeedForUrlString(urlString: BASE_URL + GET_UPCOMING_MOVIES_URL + parameters, entityName: upcomingMovie, completion: completion)
     }
-    
-    let topRatedMovie = "TopRatedMovie"
-    let popularMovie = "PopularMovie"
-    let upcomingMovie = "UpcomingMovie"
     
     private func clearData(entityName: String) {
         do {
@@ -69,8 +58,6 @@ class ApiService: NSObject {
                 return
             }
         }
-
     }
-    
 }
 

@@ -70,8 +70,6 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
             flowLayout.minimumLineSpacing = 0
         }
         
-        collectionView?.backgroundColor = .brown
-        
         collectionView?.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         

@@ -21,8 +21,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let navController = UINavigationController(rootViewController: homeViewController)
         window?.rootViewController = navController
         
-        CoreDataStack.instance.applicationDocumentsDirectory()
-        
         return true
     }
 
