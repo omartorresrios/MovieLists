@@ -16,15 +16,15 @@ class ApiService: NSObject {
     static let instance = ApiService()
     
     func fetchPopularMovies(completion: @escaping ([[String : AnyObject]]) -> ()) {
-        fetchFeedForUrlString(urlString: BASE_URL + GET_POPULAR_MOVIES_URL + parameters, entityName: popularMovie, completion: completion)
+        fetchFeedForUrlString(urlString: BASE_URL + GET_POPULAR_MOVIES_URL + parameters, entityName: EntityName.popularMovie.rawValue, completion: completion)
     }
     
     func fetchTopRatedMovies(completion: @escaping ([[String : AnyObject]]) -> ()) {
-        fetchFeedForUrlString(urlString: BASE_URL + GET_TOP_RATED_MOVIES_URL + parameters, entityName: topRatedMovie, completion: completion)
+        fetchFeedForUrlString(urlString: BASE_URL + GET_TOP_RATED_MOVIES_URL + parameters, entityName: EntityName.topRatedMovie.rawValue, completion: completion)
     }
     
     func fetchUpcomingMovies(completion: @escaping ([[String : AnyObject]]) -> ()) {
-        fetchFeedForUrlString(urlString: BASE_URL + GET_UPCOMING_MOVIES_URL + parameters, entityName: upcomingMovie, completion: completion)
+        fetchFeedForUrlString(urlString: BASE_URL + GET_UPCOMING_MOVIES_URL + parameters, entityName: EntityName.upcomingMovie.rawValue, completion: completion)
     }
     
     private func clearData(entityName: String) {

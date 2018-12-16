@@ -50,7 +50,7 @@ class UpComingCell: BaseCell, UICollectionViewDataSource, UICollectionViewDelega
     }
     
     func fetchMovies() {
-        performFetch()
+        CoreDataStack.instance.performFetch(frc: fetchedhResultController)
         ApiService.instance.fetchUpcomingMovies { (movies) in
             CoreDataStack.instance.saveInCoreDataWith(number: 3, array: movies)
         }
@@ -71,22 +71,14 @@ class UpComingCell: BaseCell, UICollectionViewDataSource, UICollectionViewDelega
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty {
             fetchedhResultController.fetchRequest.predicate = nil
-            performFetch()
+            CoreDataStack.instance.performFetch(frc: fetchedhResultController)
         } else {
             var predicate: NSPredicate = NSPredicate()
             predicate = NSPredicate(format: "title contains[c] '\(searchText)'")
             fetchedhResultController.fetchRequest.predicate = predicate
-            performFetch()
+            CoreDataStack.instance.performFetch(frc: fetchedhResultController)
         }
         collectionView.reloadData()
-    }
-    
-    func performFetch() {
-        do {
-            try self.fetchedhResultController.performFetch()
-        } catch {
-            print("Error fetching result controller")
-        }
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {

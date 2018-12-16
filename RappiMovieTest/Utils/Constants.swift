@@ -22,11 +22,6 @@ let LOGIN_METHOD = "authentication/token/validate_with_login"
 let GET_SESSION_ID_METHOD = "authentication/session/new"
 let GET_USER_ID_METHOD = "account"
 
-// Entity names
-let topRatedMovie = "TopRatedMovie"
-let popularMovie = "PopularMovie"
-let upcomingMovie = "UpcomingMovie"
-
 // Others
 let parameters = "?api_key=\(API_KEY!)&language=en-US&page=1"
 let header = ["Accept": "application/json"]

@@ -9,13 +9,13 @@
 import UIKit
 import CoreData
 
-protocol FeedCellDelegate {
+protocol PopularCellDelegate {
     func didTapToMovieDetail(title: String, overview: String, voteCount: Int32, popularity: Double, voteAverage: Double, releaseDate: String, posterPath: String)
 }
 
-class FeedCell: BaseCell, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UISearchBarDelegate, NSFetchedResultsControllerDelegate {
+class PopularCell: BaseCell, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UISearchBarDelegate, NSFetchedResultsControllerDelegate {
     
-    var feedCellDelegate: FeedCellDelegate?
+    var popularCellDelegate: PopularCellDelegate?
     let cellId = "cellId"
     var blockOperations: [BlockOperation] = []
     
@@ -50,7 +50,7 @@ class FeedCell: BaseCell, UICollectionViewDataSource, UICollectionViewDelegate, 
     }
     
     func fetchMovies() {
-        performFetch()
+        CoreDataStack.instance.performFetch(frc: fetchedhResultController)
         ApiService.instance.fetchPopularMovies { (movies) in
             CoreDataStack.instance.saveInCoreDataWith(number: 1, array: movies)
         }
@@ -71,22 +71,14 @@ class FeedCell: BaseCell, UICollectionViewDataSource, UICollectionViewDelegate, 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty {
             fetchedhResultController.fetchRequest.predicate = nil
-            performFetch()
+            CoreDataStack.instance.performFetch(frc: fetchedhResultController)
         } else {
             var predicate: NSPredicate = NSPredicate()
             predicate = NSPredicate(format: "title contains[c] '\(searchText)'")
             fetchedhResultController.fetchRequest.predicate = predicate
-            performFetch()
+            CoreDataStack.instance.performFetch(frc: fetchedhResultController)
         }
         collectionView.reloadData()
-    }
-    
-    func performFetch() {
-        do {
-            try self.fetchedhResultController.performFetch()
-        } catch {
-            print("Error fetching result controller")
-        }
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
@@ -159,7 +151,7 @@ class FeedCell: BaseCell, UICollectionViewDataSource, UICollectionViewDelegate, 
             let voteAverage = movie.vote_average
             let releaseDate = movie.release_date
             
-            feedCellDelegate?.didTapToMovieDetail(title: title!, overview: overview!, voteCount: voteCount, popularity: popularity, voteAverage: voteAverage, releaseDate: releaseDate!, posterPath: posterPath!)
+            popularCellDelegate?.didTapToMovieDetail(title: title!, overview: overview!, voteCount: voteCount, popularity: popularity, voteAverage: voteAverage, releaseDate: releaseDate!, posterPath: posterPath!)
         }
     }
 }

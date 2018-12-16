@@ -25,7 +25,7 @@ class CoreDataStack: NSObject {
         return container
     }()
     
-    func saveContext () {
+    func saveContext() {
         let context = persistentContainer.viewContext
         if context.hasChanges {
             do {
@@ -34,6 +34,14 @@ class CoreDataStack: NSObject {
                 let nserror = error as NSError
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
             }
+        }
+    }
+    
+    func performFetch(frc: NSFetchedResultsController<NSFetchRequestResult>) {
+        do {
+            try frc.performFetch()
+        } catch {
+            print("Error fetching result controller")
         }
     }
     

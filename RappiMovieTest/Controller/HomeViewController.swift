@@ -9,7 +9,7 @@
 import UIKit
 import Locksmith
 
-class HomeViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, FeedCellDelegate, TopRatedCellDelegate, UpcomingCellDelegate {
+class HomeViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, PopularCellDelegate, TopRatedCellDelegate, UpcomingCellDelegate {
     
     let popularCellId = "popularCellId"
     let topRatedCellId = "topRatedCellId"
@@ -75,7 +75,7 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
         
         collectionView?.contentInsetAdjustmentBehavior = .never
         
-        collectionView?.register(FeedCell.self, forCellWithReuseIdentifier: popularCellId)
+        collectionView?.register(PopularCell.self, forCellWithReuseIdentifier: popularCellId)
         collectionView?.register(TopRatedCell.self, forCellWithReuseIdentifier: topRatedCellId)
         collectionView?.register(UpComingCell.self, forCellWithReuseIdentifier: upcomingCellId)
         
@@ -129,8 +129,8 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.item == 0 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: popularCellId, for: indexPath) as! FeedCell
-            cell.feedCellDelegate = self
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: popularCellId, for: indexPath) as! PopularCell
+            cell.popularCellDelegate = self
             searchBar.delegate = cell
             return cell
         } else if indexPath.item == 1 {
