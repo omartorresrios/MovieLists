@@ -45,10 +45,10 @@ class CoreDataStack: NSObject {
         }
     }
     
-    private func createMovieEntityFrom(number: Int, entityName: String, dictionary: [String: AnyObject]) -> NSManagedObject? {
+    private func createMovieEntityFrom(entity: String, entityName: String, dictionary: [String: AnyObject]) -> NSManagedObject? {
         let context = CoreDataStack.instance.persistentContainer.viewContext
         
-        if number == 1 {
+        if entity == EntityName.popularMovie.rawValue {
             let model = NSEntityDescription.insertNewObject(forEntityName: entityName, into: context) as! PopularMovie
             model.title = dictionary["title"] as? String ?? ""
             model.overview = dictionary["overview"] as? String ?? ""
@@ -58,7 +58,7 @@ class CoreDataStack: NSObject {
             model.vote_average = dictionary["vote_average"] as? Double ?? 0
             model.vote_count = dictionary["vote_count"] as? Int32 ?? 0
             return model
-        } else if number == 2 {
+        } else if entity == EntityName.topRatedMovie.rawValue {
             let model = NSEntityDescription.insertNewObject(forEntityName: entityName, into: context) as! TopRatedMovie
             model.title = dictionary["title"] as? String ?? ""
             model.overview = dictionary["overview"] as? String ?? ""
@@ -81,13 +81,13 @@ class CoreDataStack: NSObject {
         }
     }
     
-    func saveInCoreDataWith(number: Int, array: [[String: AnyObject]]) {
-        if number == 1 {
-            _ = array.map{self.createMovieEntityFrom(number: 1, entityName: "PopularMovie", dictionary: $0)}
-        } else if number == 2 {
-            _ = array.map{self.createMovieEntityFrom(number: 2, entityName: "TopRatedMovie", dictionary: $0)}
+    func saveInCoreDataWith(entity: String, array: [[String: AnyObject]]) {
+        if entity == EntityName.popularMovie.rawValue {
+            _ = array.map{self.createMovieEntityFrom(entity: EntityName.popularMovie.rawValue, entityName: "PopularMovie", dictionary: $0)}
+        } else if entity == EntityName.topRatedMovie.rawValue {
+            _ = array.map{self.createMovieEntityFrom(entity: EntityName.topRatedMovie.rawValue, entityName: "TopRatedMovie", dictionary: $0)}
         } else {
-            _ = array.map{self.createMovieEntityFrom(number: 3, entityName: "UpcomingMovie", dictionary: $0)}
+            _ = array.map{self.createMovieEntityFrom(entity: EntityName.upcomingMovie.rawValue, entityName: "UpcomingMovie", dictionary: $0)}
         }
         
         do {

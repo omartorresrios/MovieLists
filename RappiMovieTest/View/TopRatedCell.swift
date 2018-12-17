@@ -52,7 +52,7 @@ class TopRatedCell: BaseCell, UICollectionViewDataSource, UICollectionViewDelega
     func fetchMovies() {
         CoreDataStack.instance.performFetch(frc: fetchedhResultController)
         ApiService.instance.fetchTopRatedMovies { (movies) in
-            CoreDataStack.instance.saveInCoreDataWith(number: 2, array: movies)
+            CoreDataStack.instance.saveInCoreDataWith(entity: EntityName.topRatedMovie.rawValue, array: movies)
         }
     }
     

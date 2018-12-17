@@ -52,7 +52,7 @@ class PopularCell: BaseCell, UICollectionViewDataSource, UICollectionViewDelegat
     func fetchMovies() {
         CoreDataStack.instance.performFetch(frc: fetchedhResultController)
         ApiService.instance.fetchPopularMovies { (movies) in
-            CoreDataStack.instance.saveInCoreDataWith(number: 1, array: movies)
+            CoreDataStack.instance.saveInCoreDataWith(entity: EntityName.popularMovie.rawValue, array: movies)
         }
     }
     

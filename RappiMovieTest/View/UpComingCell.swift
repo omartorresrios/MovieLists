@@ -52,7 +52,7 @@ class UpComingCell: BaseCell, UICollectionViewDataSource, UICollectionViewDelega
     func fetchMovies() {
         CoreDataStack.instance.performFetch(frc: fetchedhResultController)
         ApiService.instance.fetchUpcomingMovies { (movies) in
-            CoreDataStack.instance.saveInCoreDataWith(number: 3, array: movies)
+            CoreDataStack.instance.saveInCoreDataWith(entity: EntityName.upcomingMovie.rawValue, array: movies)
         }
     }
     
