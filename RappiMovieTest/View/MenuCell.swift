@@ -12,8 +12,11 @@ class MenuCell: BaseCell {
     
     let nameLabel: UILabel = {
         let label = UILabel()
+        label.numberOfLines = 1
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.boldSystemFont(ofSize: 17)
         label.textAlignment = .center
-        label.textColor = .black
+        label.textColor = .darkGray
         return label
     }()
     
@@ -31,7 +34,6 @@ class MenuCell: BaseCell {
     
     override func setupViews() {
         super.setupViews()
-        backgroundColor = .green
         addSubview(nameLabel)
         nameLabel.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         nameLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
