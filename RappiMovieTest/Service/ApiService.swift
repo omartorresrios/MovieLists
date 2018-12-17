@@ -36,7 +36,7 @@ class ApiService: NSObject {
                 _ = objects.map{$0.map{context.delete($0)}}
                 CoreDataStack.instance.saveContext()
             } catch let error {
-                print("ERROR DELETING : \(error)")
+                print("Erro deleting : \(error)")
             }
         }
     }

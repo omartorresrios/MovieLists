@@ -89,7 +89,6 @@ class AuthService {
             switch response.result {
             case .success(let JSON):
                 let responseDictionary = JSON as! NSDictionary
-                print("responseDictionary: \(responseDictionary)")
                 
                 let username = responseDictionary["username"] as? String ?? ""
                 
@@ -119,7 +118,6 @@ class AuthService {
         // save API AuthToken in Keychain
         do {
             try Locksmith.saveData(data: ["authenticationToken": tokenString], forUserAccount: "AuthToken")
-            print("let see: ", Locksmith.loadDataForUserAccount(userAccount: "AuthToken"))
         } catch {
             print("can't save data in Keychain")
         }
