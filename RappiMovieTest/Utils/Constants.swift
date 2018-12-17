@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 // Endpoint URL's
 let API_KEY = ProcessInfo.processInfo.environment["RAPPI_MOVIE_TEST_API_KEY"]
@@ -25,3 +26,5 @@ let GET_USER_ID_METHOD = "account"
 // Others
 let parameters = "?api_key=\(API_KEY!)&language=en-US&page=1"
 let header = ["Accept": "application/json"]
+let popularityFont = UIFont.systemFont(ofSize: 15)
+let popularityValueFont = UIFont.systemFont(ofSize: 15)

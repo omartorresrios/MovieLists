@@ -58,6 +58,7 @@ class TopRatedCell: BaseCell, UICollectionViewDataSource, UICollectionViewDelega
     
     func setupCollectionView() {
         collectionView.keyboardDismissMode = .onDrag
+        collectionView.backgroundColor = UIColor.rgb(red: 180, green: 180, blue: 180)
         
         collectionView.contentInset = UIEdgeInsets(top: 50, left: 0, bottom: 0, right: 0)
         collectionView.scrollIndicatorInsets = UIEdgeInsets(top: 50, left: 0, bottom: 0, right: 0)
@@ -134,11 +135,11 @@ class TopRatedCell: BaseCell, UICollectionViewDataSource, UICollectionViewDelega
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: frame.width, height: 380)
+        return CGSize(width: frame.width, height: 184)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
+        return 4
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

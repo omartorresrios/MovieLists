@@ -16,16 +16,17 @@ class UpcomingMovieCell: BaseCell {
                 self.titleLabel.text = title
             }
             
+            if let overview = movie?.overview {
+                self.overviewLabel.text = overview
+            }
+            
             if let popularity = movie?.popularity {
-                self.popularityLabel.text = "\(popularity)"
-            }
-            
-            if let voteAverage = movie?.vote_average {
-                self.voteAverageLabel.text = "\(voteAverage)"
-            }
-            
-            if let voteCount = movie?.vote_count {
-                self.voteCountLabel.text = "\(voteCount)"
+                
+                let attributedText = NSMutableAttributedString(string: "Popularity: ", attributes: [NSAttributedStringKey.font: popularityFont, NSAttributedStringKey.foregroundColor: UIColor.darkGray])
+                
+                attributedText.append(NSAttributedString(string: "\(popularity)" , attributes: [NSAttributedStringKey.font: popularityValueFont, NSAttributedStringKey.foregroundColor: UIColor.gray]))
+                
+                self.popularityLabel.attributedText = attributedText
             }
             
             if let url = movie?.poster_path {
@@ -44,49 +45,48 @@ class UpcomingMovieCell: BaseCell {
     
     let titleLabel: UILabel = {
         let label = UILabel()
+        label.numberOfLines = 1
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.boldSystemFont(ofSize: 16)
         label.textAlignment = .left
-        label.textColor = .black
+        label.textColor = .darkGray
+        return label
+    }()
+    
+    let overviewLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 3
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 15)
+        label.textAlignment = .left
+        label.textColor = .gray
         return label
     }()
     
     let popularityLabel: UILabel = {
         let label = UILabel()
+        label.numberOfLines = 1
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
-        label.textColor = .black
-        return label
-    }()
-    
-    let voteAverageLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .left
-        label.textColor = .black
-        return label
-    }()
-    
-    let voteCountLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .left
-        label.textColor = .black
         return label
     }()
     
     override func setupViews() {
         super.setupViews()
         
+        backgroundColor = .white
+        
         addSubview(movieImageView)
-        movieImageView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 200)
+        movieImageView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 110, height: 160)
         
         addSubview(titleLabel)
-        titleLabel.anchor(top: movieImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 20, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 0)
+        titleLabel.anchor(top: movieImageView.topAnchor, left: movieImageView.rightAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 0)
+        
+        addSubview(overviewLabel)
+        overviewLabel.anchor(top: titleLabel.bottomAnchor, left: movieImageView.rightAnchor, bottom: nil, right: rightAnchor, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 0)
         
         addSubview(popularityLabel)
-        popularityLabel.anchor(top: titleLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 20, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 0)
-        
-        addSubview(voteAverageLabel)
-        voteAverageLabel.anchor(top: (popularityLabel).bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 20, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 0)
-        
-        addSubview(voteCountLabel)
-        voteCountLabel.anchor(top: voteAverageLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 20, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 0)
+        popularityLabel.anchor(top: overviewLabel.bottomAnchor, left: movieImageView.rightAnchor, bottom: nil, right: rightAnchor, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 0)
         
     }
     
