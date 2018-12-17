@@ -149,6 +149,15 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		A02B24EF21C80FBF00819FB7 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				A07458A821C0BDEC00D3E483 /* AuthService.swift */,
+				A0A8637221C2E39600D7370C /* ApiService.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
 		A074588021C0880200D3E483 = {
 			isa = PBXGroup;
 			children = (
@@ -173,6 +182,7 @@
 				A02B24E621C4870C00819FB7 /* Model */,
 				A02B24E521C4862400819FB7 /* View */,
 				A02B24E421C4860E00819FB7 /* Controller */,
+				A02B24EF21C80FBF00819FB7 /* Service */,
 				A07458A121C0886600D3E483 /* Utils */,
 				A074588C21C0880200D3E483 /* AppDelegate.swift */,
 				A074588E21C0880200D3E483 /* ViewController.swift */,
@@ -189,10 +199,8 @@
 			isa = PBXGroup;
 			children = (
 				A07458A221C0887100D3E483 /* Extensions.swift */,
-				A07458A821C0BDEC00D3E483 /* AuthService.swift */,
 				A0A8636921C2190600D7370C /* CoreDataStack.swift */,
 				A0A8637021C2AFE700D7370C /* CustomImageView.swift */,
-				A0A8637221C2E39600D7370C /* ApiService.swift */,
 				A0A8637421C2E71D00D7370C /* Constants.swift */,
 			);
 			path = Utils;
