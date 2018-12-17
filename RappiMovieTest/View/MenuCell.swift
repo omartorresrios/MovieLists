@@ -22,13 +22,13 @@ class MenuCell: BaseCell {
     
     override var isHighlighted: Bool {
         didSet {
-            nameLabel.textColor = isHighlighted ? UIColor.red : UIColor.black
+            nameLabel.textColor = isHighlighted ? baseUIColor : UIColor.darkGray
         }
     }
     
     override var isSelected: Bool {
         didSet {
-            nameLabel.textColor = isSelected ? UIColor.red : UIColor.black
+            nameLabel.textColor = isSelected ? baseUIColor : UIColor.darkGray
         }
     }
     

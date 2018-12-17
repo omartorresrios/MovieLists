@@ -17,8 +17,8 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
     
     let logoutButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(#imageLiteral(resourceName: "logout"), for: .normal)
-        button.addTarget(self, action: #selector(handleLogout), for: .touchUpInside)
+        button.setImage(#imageLiteral(resourceName: "logout").withRenderingMode(.alwaysTemplate), for: .normal)
+        button.tintColor = baseUIColor
         return button
     }()
     
@@ -52,6 +52,7 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
         
         navigationController?.navigationBar.addSubview(logoutButton)
         logoutButton.anchor(top: nil, left: nil, bottom: nil, right: navBar?.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 30, height: 30)
+        logoutButton.addTarget(self, action: #selector(handleLogout), for: .touchUpInside)
         logoutButton.centerYAnchor.constraint(equalTo: (navBar?.centerYAnchor)!).isActive = true
         
         navigationController?.navigationBar.addSubview(searchBar)
@@ -85,7 +86,7 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
     func checkLogin() {
         let defaults = UserDefaults.standard
         if defaults.object(forKey: "userLoggedIn") == nil {
-            
+
             DispatchQueue.main.async {
                 let loginController = LoginController()
                 let navController = UINavigationController(rootViewController: loginController)
@@ -93,6 +94,7 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
             }
             return
         }
+//        if let domainName = Bundle.main.bundleIdentifier { UserDefaults.standard.removePersistentDomain(forName: domainName) }
     }
     
     func scrollToMenuIndex(menuIndex: Int) {

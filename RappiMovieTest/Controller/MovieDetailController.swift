@@ -10,6 +10,12 @@ import UIKit
 
 class MovieDetailController: UIViewController {
     
+    let scrollView: UIScrollView = {
+        let v = UIScrollView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
     let movieImageView: CustomImageView = {
         let imageView = CustomImageView()
         imageView.clipsToBounds = true
@@ -19,43 +25,53 @@ class MovieDetailController: UIViewController {
     
     let titleLabel: UILabel = {
         let label = UILabel()
-        label.textAlignment = .left
-        label.textColor = .black
+        label.numberOfLines = 4
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.boldSystemFont(ofSize: 40)
+        label.textAlignment = .center
+        label.textColor = baseUIColor
         return label
     }()
     
     let movieOverviewLabel: UILabel = {
         let label = UILabel()
+        label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.boldSystemFont(ofSize: 15)
         label.textAlignment = .left
-        label.textColor = .black
+        label.textColor = baseTextColor
         return label
     }()
     
     let movieVoteCountLabel: UILabel = {
         let label = UILabel()
+        label.numberOfLines = 1
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
-        label.textColor = .black
         return label
     }()
     
     let moviePopularityLabel: UILabel = {
         let label = UILabel()
+        label.numberOfLines = 1
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
-        label.textColor = .black
         return label
     }()
     
     let movieVoteAverageLabel: UILabel = {
         let label = UILabel()
+        label.numberOfLines = 1
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
-        label.textColor = .black
         return label
     }()
     
     let movieReleaseDateLabel: UILabel = {
         let label = UILabel()
+        label.numberOfLines = 1
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
-        label.textColor = .black
         return label
     }()
     
@@ -68,7 +84,7 @@ class MovieDetailController: UIViewController {
     
     var movieTitle: String! {
         didSet {
-            titleLabel.text = movieTitle
+            titleLabel.text = movieTitle.uppercased()
         }
     }
     
@@ -80,56 +96,79 @@ class MovieDetailController: UIViewController {
     
     var movieVoteCount: Int32! {
         didSet {
-            movieVoteCountLabel.text = "\(movieVoteCount!)"
+            let attributedText = NSMutableAttributedString(string: "Vote: ", attributes: [NSAttributedStringKey.font: titleFont, NSAttributedStringKey.foregroundColor: UIColor.darkGray])
+            
+            attributedText.append(NSAttributedString(string: "\(movieVoteCount!)" , attributes: [NSAttributedStringKey.font: titleValueFont, NSAttributedStringKey.foregroundColor: baseTextColor]))
+            
+            movieVoteCountLabel.attributedText = attributedText
         }
     }
     
     var moviePopularity: Double! {
         didSet {
-            moviePopularityLabel.text = "\(moviePopularity!)"
+            let attributedText = NSMutableAttributedString(string: "Popularity: ", attributes: [NSAttributedStringKey.font: titleFont, NSAttributedStringKey.foregroundColor: UIColor.darkGray])
+            
+            attributedText.append(NSAttributedString(string: "\(moviePopularity!)" , attributes: [NSAttributedStringKey.font: titleValueFont, NSAttributedStringKey.foregroundColor: baseTextColor]))
+            
+            moviePopularityLabel.attributedText = attributedText
         }
     }
     
     var movieVoteAverage: Double! {
         didSet {
-            movieVoteAverageLabel.text = "\(movieVoteAverage!)"
+            let attributedText = NSMutableAttributedString(string: "Vote average: ", attributes: [NSAttributedStringKey.font: titleFont, NSAttributedStringKey.foregroundColor: UIColor.darkGray])
+            
+            attributedText.append(NSAttributedString(string: "\(movieVoteAverage!)" , attributes: [NSAttributedStringKey.font: titleValueFont, NSAttributedStringKey.foregroundColor: baseTextColor]))
+            
+            movieVoteAverageLabel.attributedText = attributedText
         }
     }
     
     var movieReleaseDate: String! {
         didSet {
-            movieReleaseDateLabel.text = "\(movieReleaseDate!)"
+            let attributedText = NSMutableAttributedString(string: "Release date: ", attributes: [NSAttributedStringKey.font: titleFont, NSAttributedStringKey.foregroundColor: UIColor.darkGray])
+            
+            attributedText.append(NSAttributedString(string: "\(movieReleaseDate!)" , attributes: [NSAttributedStringKey.font: titleValueFont, NSAttributedStringKey.foregroundColor: baseTextColor]))
+            
+            movieReleaseDateLabel.attributedText = attributedText
         }
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupView()
+        navigationController?.navigationBar.topItem?.title = ""
+        navigationController?.navigationBar.tintColor = baseUIColor
+    }
+    
+    func setupView() {
         view.backgroundColor = .white
         
-        view.addSubview(movieImageView)
-        movieImageView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 300)
+        view.addSubview(scrollView)
+        scrollView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        view.addSubview(titleLabel)
-        titleLabel.anchor(top: movieImageView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 20, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 0)
+        scrollView.addSubview(movieImageView)
+        movieImageView.anchor(top: scrollView.topAnchor, left: scrollView.leftAnchor, bottom: nil, right: scrollView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: view.frame.width, height: 300)
         
-        view.addSubview(movieOverviewLabel)
-        movieOverviewLabel.anchor(top: titleLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 20, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 0)
+        movieImageView.addSubview(titleLabel)
+        titleLabel.anchor(top: nil, left: movieImageView.leftAnchor, bottom: nil, right: movieImageView.rightAnchor, paddingTop: 0, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 0)
+        titleLabel.centerYAnchor.constraint(equalTo: movieImageView.centerYAnchor).isActive = true
+        titleLabel.textDropShadow()
         
-        view.addSubview(movieVoteCountLabel)
-        movieVoteCountLabel.anchor(top: movieOverviewLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 10, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 0)
+        scrollView.addSubview(movieOverviewLabel)
+        movieOverviewLabel.anchor(top: movieImageView.bottomAnchor, left: scrollView.leftAnchor, bottom: nil, right: scrollView.rightAnchor, paddingTop: 20, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 0)
         
-        view.addSubview(moviePopularityLabel)
-        moviePopularityLabel.anchor(top: movieVoteCountLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 10, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 0)
+        scrollView.addSubview(movieVoteCountLabel)
+        movieVoteCountLabel.anchor(top: movieOverviewLabel.bottomAnchor, left: scrollView.leftAnchor, bottom: nil, right: scrollView.rightAnchor, paddingTop: 10, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 0)
         
-        view.addSubview(movieVoteAverageLabel)
-        movieVoteAverageLabel.anchor(top: moviePopularityLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 10, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 0)
+        scrollView.addSubview(moviePopularityLabel)
+        moviePopularityLabel.anchor(top: movieVoteCountLabel.bottomAnchor, left: scrollView.leftAnchor, bottom: nil, right: scrollView.rightAnchor, paddingTop: 10, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 0)
         
-        view.addSubview(movieReleaseDateLabel)
-        movieReleaseDateLabel.anchor(top: movieVoteAverageLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 10, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 0)
+        scrollView.addSubview(movieVoteAverageLabel)
+        movieVoteAverageLabel.anchor(top: moviePopularityLabel.bottomAnchor, left: scrollView.leftAnchor, bottom: nil, right: scrollView.rightAnchor, paddingTop: 10, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 0)
         
-        
-        
+        scrollView.addSubview(movieReleaseDateLabel)
+        movieReleaseDateLabel.anchor(top: movieVoteAverageLabel.bottomAnchor, left: scrollView.leftAnchor, bottom: scrollView.bottomAnchor, right: scrollView.rightAnchor, paddingTop: 10, paddingLeft: 12, paddingBottom: 12, paddingRight: 12, width: 0, height: 0)
     }
     
 }

@@ -26,5 +26,7 @@ let GET_USER_ID_METHOD = "account"
 // Others
 let parameters = "?api_key=\(API_KEY!)&language=en-US&page=1"
 let header = ["Accept": "application/json"]
-let popularityFont = UIFont.systemFont(ofSize: 15)
-let popularityValueFont = UIFont.systemFont(ofSize: 15)
+let titleFont = UIFont.systemFont(ofSize: 15)
+let titleValueFont = UIFont.systemFont(ofSize: 15)
+let baseTextColor = UIColor.rgb(red: 22, green: 22, blue: 22)
+let baseUIColor = UIColor.rgb(red: 255, green: 115, blue: 118)

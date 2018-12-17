@@ -22,9 +22,9 @@ class PopularMovieCell: BaseCell {
             
             if let popularity = movie?.popularity {
                 
-                let attributedText = NSMutableAttributedString(string: "Popularity: ", attributes: [NSAttributedStringKey.font: popularityFont, NSAttributedStringKey.foregroundColor: UIColor.darkGray])
+                let attributedText = NSMutableAttributedString(string: "Popularity: ", attributes: [NSAttributedStringKey.font: titleFont, NSAttributedStringKey.foregroundColor: UIColor.darkGray])
                 
-                attributedText.append(NSAttributedString(string: "\(popularity)" , attributes: [NSAttributedStringKey.font: popularityValueFont, NSAttributedStringKey.foregroundColor: UIColor.gray]))
+                attributedText.append(NSAttributedString(string: "\(popularity)" , attributes: [NSAttributedStringKey.font: titleValueFont, NSAttributedStringKey.foregroundColor: baseTextColor]))
                 
                 self.popularityLabel.attributedText = attributedText
             }
@@ -59,7 +59,7 @@ class PopularMovieCell: BaseCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 15)
         label.textAlignment = .left
-        label.textColor = .gray
+        label.textColor = baseTextColor
         return label
     }()
     

@@ -15,27 +15,37 @@ class LoginController: UIViewController, UITextFieldDelegate {
     
     let scrollView: UIScrollView = {
         let v = UIScrollView()
-        v.backgroundColor = .green
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
     
     let usernameTextField: UITextField = {
         let tf = UITextField()
-        tf.placeholder = "email"
-        tf.textColor = .black
+        tf.placeholder = "Nombre de usuario"
+        tf.layer.borderWidth = 1
+        tf.layer.borderColor = UIColor.lightGray.cgColor
+        tf.layer.cornerRadius = 6
+        tf.font = titleFont
+        tf.textColor = .gray
         return tf
     }()
     let passwordTextField: UITextField = {
         let tf = UITextField()
-        tf.placeholder = "password"
-        tf.textColor = .black
+        tf.placeholder = "Contraseña"
+        tf.layer.borderWidth = 1
+        tf.layer.borderColor = UIColor.lightGray.cgColor
+        tf.layer.cornerRadius = 6
+        tf.font = titleFont
+        tf.textColor = .gray
         return tf
     }()
     
     let loginButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setTitle("login", for: .normal)
+        button.setTitle("Incia sesión", for: .normal)
+        button.backgroundColor = baseUIColor
+        button.layer.cornerRadius = 6
+        button.setTitleColor(.white, for: .normal)
         button.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
         return button
     }()
@@ -47,15 +57,13 @@ class LoginController: UIViewController, UITextFieldDelegate {
     }
     
     func setupView() {
-        view.backgroundColor = .cyan
-        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHidden(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-        
     }
     
     func setupScrollView() {
         view.addSubview(scrollView)
+        scrollView.backgroundColor = .white
         scrollView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         scrollView.keyboardDismissMode = .onDrag
         

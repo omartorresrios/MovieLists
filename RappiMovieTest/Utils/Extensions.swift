@@ -28,6 +28,21 @@ extension UIColor {
     
 }
 
+extension UILabel {
+    func textDropShadow() {
+        self.layer.masksToBounds = false
+        self.layer.shadowRadius = 2.0
+        self.layer.shadowOpacity = 0.9
+        self.layer.shadowOffset = CGSize(width: 1, height: 2)
+    }
+    
+    static func createCustomLabel() -> UILabel {
+        let label = UILabel()
+        label.textDropShadow()
+        return label
+    }
+}
+
 extension UIView {
     func anchor(top: NSLayoutYAxisAnchor?, left: NSLayoutXAxisAnchor?, bottom: NSLayoutYAxisAnchor?, right: NSLayoutXAxisAnchor?,  paddingTop: CGFloat, paddingLeft: CGFloat, paddingBottom: CGFloat, paddingRight: CGFloat, width: CGFloat, height: CGFloat) {
         

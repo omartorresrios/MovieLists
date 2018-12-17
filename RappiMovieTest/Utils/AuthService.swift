@@ -119,6 +119,7 @@ class AuthService {
         // save API AuthToken in Keychain
         do {
             try Locksmith.saveData(data: ["authenticationToken": tokenString], forUserAccount: "AuthToken")
+            print("let see: ", Locksmith.loadDataForUserAccount(userAccount: "AuthToken"))
         } catch {
             print("can't save data in Keychain")
         }
