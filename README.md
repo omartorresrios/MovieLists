@@ -7,7 +7,7 @@ MovieList allows you to watch the most popular movies, the best rated and those 
 
 ## Main Features
 * Feed to view popular, top rated and upcoming movies.
-* Search for movies.
+* Search for movies (Online and Offline).
 * Visualize a specific movie with all its details.
 
 ## Technical characteristics
